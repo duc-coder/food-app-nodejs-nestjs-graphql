@@ -1,0 +1,21 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  userById(id: Float!): UserModel!
+  users: [UserModel!]!
+}
+
+"""user """
+type UserModel {
+  accessToken: String
+  address: String
+  email: String!
+  full_name: String!
+  is_remove: Boolean!
+  password: String!
+  refreshToken: String
+  role: String!
+  user_id: ID!
+}

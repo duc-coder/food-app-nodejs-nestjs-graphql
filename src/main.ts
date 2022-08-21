@@ -1,8 +1,18 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+const port = process.env.PORT;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+
+  app.useGlobalPipes(new ValidationPipe());
+
+  await app.listen(port, async () => {
+    console.log(`App is listening on port ${await app.getUrl()}`);
+  });
+
+  // const { schema } = app.get(GraphQLSchemaHost);
 }
+
 bootstrap();

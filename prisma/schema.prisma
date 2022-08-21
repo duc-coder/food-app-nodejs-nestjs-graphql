@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Food_types {
+  type_id                                Int     @id @default(autoincrement())
+  type_name                              String  @db.VarChar(255)
+  is_remove                              Boolean @default(false)
+  Foods_Food_typesToFoods_type_id        Foods[] @relation("Food_typesToFoods_type_id")
+  Foods_Food_typesToFoods_FoodTypeTypeId Foods[] @relation("Food_typesToFoods_FoodTypeTypeId")
+}
+
+model Foods {
+  food_id                                     Int         @id @default(autoincrement())
+  food_name                                   String      @db.VarChar(255)
+  image                                       String?     @db.VarChar(255)
+  price                                       Float       @db.Float
+  desc                                        String      @db.VarChar(1000)
+  is_remove                                   Boolean     @default(false)
+  type_id                                     Int?
+  FoodTypeTypeId                              Int?
+  Food_types_Food_typesToFoods_type_id        Food_types? @relation("Food_typesToFoods_type_id", fields: [type_id], references: [type_id], map: "Foods_ibfk_1")
+  Food_types_Food_typesToFoods_FoodTypeTypeId Food_types? @relation("Food_typesToFoods_FoodTypeTypeId", fields: [FoodTypeTypeId], references: [type_id], map: "Foods_ibfk_2")
+  Orders_FoodsToOrders_food_id                Orders[]    @relation("FoodsToOrders_food_id")
+  Orders_FoodsToOrders_FoodFoodId             Orders[]    @relation("FoodsToOrders_FoodFoodId")
+  Sub_foods                                   Sub_foods[]
+
+  @@index([FoodTypeTypeId], map: "FoodTypeTypeId")
+  @@index([type_id], map: "type_id")
+}
+
+model Like_res {
+  id                                                Int          @id @default(autoincrement())
+  date_like                                         DateTime     @db.DateTime(0)
+  is_remove                                         Boolean      @default(false)
+  user_id                                           Int?
+  res_id                                            Int?
+  UserUserId                                        Int?
+  RestaurantResId                                   Int?
+  Users_Like_res_user_idToUsers                     Users?       @relation("Like_res_user_idToUsers", fields: [user_id], references: [user_id], map: "Like_res_ibfk_1859")
+  Restaurants_Like_res_res_idToRestaurants          Restaurants? @relation("Like_res_res_idToRestaurants", fields: [res_id], references: [res_id], map: "Like_res_ibfk_1860")
+  Users_Like_res_UserUserIdToUsers                  Users?       @relation("Like_res_UserUserIdToUsers", fields: [UserUserId], references: [user_id], map: "Like_res_ibfk_1861")
+  Restaurants_Like_res_RestaurantResIdToRestaurants Restaurants? @relation("Like_res_RestaurantResIdToRestaurants", fields: [RestaurantResId], references: [res_id], map: "Like_res_ibfk_1862")
+
+  @@index([RestaurantResId], map: "RestaurantResId")
+  @@index([UserUserId], map: "UserUserId")
+  @@index([res_id], map: "res_id")
+  @@index([user_id], map: "user_id")
+}
+
+model Orders {
+  order_id                       Int     @id @default(autoincrement())
+  amount                         Int
+  code                           String  @db.VarChar(255)
+  arr_sub_id                     String  @db.VarChar(255)
+  is_remove                      Boolean @default(false)
+  food_id                        Int?
+  user_id                        Int?
+  FoodFoodId                     Int?
+  UserUserId                     Int?
+  Foods_FoodsToOrders_food_id    Foods?  @relation("FoodsToOrders_food_id", fields: [food_id], references: [food_id], map: "Orders_ibfk_2055")
+  Users_Orders_user_idToUsers    Users?  @relation("Orders_user_idToUsers", fields: [user_id], references: [user_id], map: "Orders_ibfk_2056")
+  Foods_FoodsToOrders_FoodFoodId Foods?  @relation("FoodsToOrders_FoodFoodId", fields: [FoodFoodId], references: [food_id], map: "Orders_ibfk_2057")
+  Users_Orders_UserUserIdToUsers Users?  @relation("Orders_UserUserIdToUsers", fields: [UserUserId], references: [user_id], map: "Orders_ibfk_2058")
+
+  @@index([FoodFoodId], map: "FoodFoodId")
+  @@index([UserUserId], map: "UserUserId")
+  @@index([food_id], map: "food_id")
+  @@index([user_id], map: "user_id")
+}
+
+model Rate_res {
+  id                                                Int          @id @default(autoincrement())
+  amount                                            Int
+  date_rate                                         DateTime     @db.DateTime(0)
+  is_remove                                         Boolean      @default(false)
+  user_id                                           Int?
+  res_id                                            Int?
+  UserUserId                                        Int?
+  RestaurantResId                                   Int?
+  Users_Rate_res_user_idToUsers                     Users?       @relation("Rate_res_user_idToUsers", fields: [user_id], references: [user_id], map: "Rate_res_ibfk_475")
+  Restaurants_Rate_res_res_idToRestaurants          Restaurants? @relation("Rate_res_res_idToRestaurants", fields: [res_id], references: [res_id], map: "Rate_res_ibfk_476")
+  Users_Rate_res_UserUserIdToUsers                  Users?       @relation("Rate_res_UserUserIdToUsers", fields: [UserUserId], references: [user_id], map: "Rate_res_ibfk_477")
+  Restaurants_Rate_res_RestaurantResIdToRestaurants Restaurants? @relation("Rate_res_RestaurantResIdToRestaurants", fields: [RestaurantResId], references: [res_id], map: "Rate_res_ibfk_478")
+
+  @@index([RestaurantResId], map: "RestaurantResId")
+  @@index([UserUserId], map: "UserUserId")
+  @@index([res_id], map: "res_id")
+  @@index([user_id], map: "user_id")
+}
+
+model Restaurants {
+  res_id                                         Int        @id @default(autoincrement())
+  res_name                                       String     @db.VarChar(255)
+  image                                          String?    @db.VarChar(255)
+  desc                                           String     @db.VarChar(255)
+  is_remove                                      Boolean    @default(false)
+  Like_res_Like_res_res_idToRestaurants          Like_res[] @relation("Like_res_res_idToRestaurants")
+  Like_res_Like_res_RestaurantResIdToRestaurants Like_res[] @relation("Like_res_RestaurantResIdToRestaurants")
+  Rate_res_Rate_res_res_idToRestaurants          Rate_res[] @relation("Rate_res_res_idToRestaurants")
+  Rate_res_Rate_res_RestaurantResIdToRestaurants Rate_res[] @relation("Rate_res_RestaurantResIdToRestaurants")
+}
+
+model Sub_foods {
+  sub_id    Int     @id @default(autoincrement())
+  sub_name  String  @db.VarChar(255)
+  sub_price Float   @db.Float
+  food_id   Int
+  is_remove Boolean @default(false)
+  Foods     Foods   @relation(fields: [food_id], references: [food_id], onDelete: NoAction, map: "Sub_foods_ibfk_1")
+
+  @@index([food_id], map: "food_id")
+}
+
+model Users {
+  user_id                             Int        @id @default(autoincrement())
+  full_name                           String     @db.VarChar(255)
+  email                               String     @db.VarChar(255)
+  password                            String     @db.VarChar(255)
+  is_remove                           Boolean    @default(false)
+  address                             String?    @db.VarChar(255)
+  accessToken                         String?    @db.VarChar(255)
+  role                                String     @default("CLIENT") @db.VarChar(255)
+  refreshToken                        String?    @db.VarChar(255)
+  Like_res_Like_res_user_idToUsers    Like_res[] @relation("Like_res_user_idToUsers")
+  Like_res_Like_res_UserUserIdToUsers Like_res[] @relation("Like_res_UserUserIdToUsers")
+  Orders_Orders_user_idToUsers        Orders[]   @relation("Orders_user_idToUsers")
+  Orders_Orders_UserUserIdToUsers     Orders[]   @relation("Orders_UserUserIdToUsers")
+  Rate_res_Rate_res_user_idToUsers    Rate_res[] @relation("Rate_res_user_idToUsers")
+  Rate_res_Rate_res_UserUserIdToUsers Rate_res[] @relation("Rate_res_UserUserIdToUsers")
+}
