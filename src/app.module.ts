@@ -5,6 +5,8 @@ import { PrismaModule } from 'nestjs-prisma';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { LikeRestaurantModule } from './modules/like_restaurants/like_restaurant.module';
+import { RestaurantModel } from './modules/restaurants/models/restaurant.model';
 import { UserModule } from './modules/users/user.module';
 
 @Module({
@@ -12,11 +14,13 @@ import { UserModule } from './modules/users/user.module';
     PrismaModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      playground: false,
+      playground: true,
       autoSchemaFile: join(process.cwd(), '/src/graphql/schema.gql'),
       sortSchema: true,
     }),
     UserModule,
+    RestaurantModel,
+    LikeRestaurantModule,
   ],
   controllers: [AppController],
   providers: [AppService],

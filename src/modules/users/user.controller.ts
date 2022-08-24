@@ -7,12 +7,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  findUsers(): Promise<UserModel[]> {
+  findUsers(): Promise<Pick<UserModel[], any>> {
     return this.userService.findUsers();
   }
 
   @Get(':id')
-  findUserById(@Param('id') id: number): Promise<UserModel> {
+  findUserById(@Param('id') id: number): Promise<Pick<UserModel, any>> {
     return this.userService.findUserById(Number(id));
   }
 }

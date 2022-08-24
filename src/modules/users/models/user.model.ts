@@ -1,8 +1,9 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { LikeRestaurantModel } from 'src/modules/like_restaurants/models/like_restaurant.model';
 
 @ObjectType({ description: 'user ' })
 export class UserModel {
-  @Field((type) => ID)
+  @Field((_type) => ID)
   user_id: number;
 
   @Field()
@@ -29,6 +30,6 @@ export class UserModel {
   @Field({ nullable: true })
   refreshToken?: string;
 
-  //   @Field(type => [Like_res])
-  //   like_res: Like_res[];
+  // @Field((_type) => [LikeRestaurantModel])
+  // like_restaurants: LikeRestaurantModel[];
 }
