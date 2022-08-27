@@ -1,0 +1,19 @@
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { __Type } from 'graphql';
+import { RestaurantModel } from 'src/modules/restaurants/models/restaurant.model';
+import { UserModel } from '../models/user.model';
+
+@InputType()
+export class LikeRestaurantInput {
+  @Field((_type) => ID)
+  res_id!: number;
+
+  @Field((_type) => ID)
+  user_id!: number;
+
+  @Field()
+  date_like!: Date;
+
+  @Field({ defaultValue: false })
+  is_remove!: boolean;
+}

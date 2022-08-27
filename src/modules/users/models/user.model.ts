@@ -30,6 +30,6 @@ export class UserModel {
   @Field({ nullable: true })
   refreshToken?: string;
 
-  // @Field((_type) => [LikeRestaurantModel])
-  // like_restaurants: LikeRestaurantModel[];
+  @Field((_type) => [LikeRestaurantModel], { nullable: 'itemsAndList' })
+  like_restaurants?: LikeRestaurantModel[];
 }

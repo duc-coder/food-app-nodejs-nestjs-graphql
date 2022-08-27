@@ -17,6 +17,9 @@ import { UserModule } from './modules/users/user.module';
       playground: true,
       autoSchemaFile: join(process.cwd(), '/src/graphql/schema.gql'),
       sortSchema: true,
+      subscriptions: {
+        'graphql-ws': true,
+      },
     }),
     UserModule,
     RestaurantModel,
