@@ -28,7 +28,6 @@ input LikeRestaurantInput {
 """like_restaurant"""
 type LikeRestaurantModel {
   date_like: DateTime!
-  id: ID!
   is_remove: Boolean!
   res_id: RestaurantModel!
   user_id: UserModel!
@@ -36,12 +35,15 @@ type LikeRestaurantModel {
 
 type Mutation {
   addLikeRestaurant(data: LikeRestaurantInput!): LikeRestaurantModel!
+  createRestaurant(data: createResInput!): RestaurantModel!
   createUser(data: CreateUserInput!): UserModel!
   deleteUserById(id: Float!): UserModel!
   updateUserById(data: UpdateUserInput!, id: Float!): UserModel!
 }
 
 type Query {
+  getLikeResListByUserId(user_id: Float!): LikeRestaurantModel!
+  getResList: RestaurantModel!
   getUserById(id: Int!): UserModel!
   getUsers: [UserModel!]!
 }
@@ -78,9 +80,15 @@ type UserModel {
   email: String!
   full_name: String!
   is_remove: Boolean!
-  like_restaurants: [LikeRestaurantModel!]!
+  like_restaurants: [LikeRestaurantModel]
   password: String!
   refreshToken: String
   role: String!
   user_id: ID!
+}
+
+input createResInput {
+  desc: String!
+  is_remove: Boolean = false
+  res_name: String!
 }

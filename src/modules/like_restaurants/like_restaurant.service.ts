@@ -7,26 +7,48 @@ import { LikeRestaurantModel } from './models/like_restaurant.model';
 export class LikeRestaurantService {
   constructor(private prisma: PrismaService) {}
 
-  async createLikeRes(
-    data: LikeRestaurantInput,
-  ): Promise<Pick<LikeRestaurantModel, any>> {
-    return await this.prisma.like_res.create({
+  async createLikeRes(data: LikeRestaurantInput): Promise<LikeRestaurantModel> {
+    const result = await this.prisma.like_res.create({
       data: {
         date_like: data.date_like,
-        res_id: Number(data.res_id),
-        user_id: Number(data.user_id),
+        Restaurants: {
+          connect: {
+            res_id: Number(data.res_id),
+          },
+        },
+        Users: {
+          connect: {
+            user_id: Number(data.user_id),
+          },
+        },
       },
       include: {
-        Restaurants_Like_res_res_idToRestaurants: true,
-        Users_Like_res_user_idToUsers: true,
+        Users: true,
+        Restaurants: true,
+      },
+    });
+    return result;
+  }
+
+  async findLikeResListByUserId(
+    user_id: number,
+  ): Promise<LikeRestaurantModel[]> {
+    return await this.prisma.like_res.findMany({
+      where: {
+        is_remove: false,
+        user_id: Number(user_id),
+      },
+      include: {
+        Users: true,
+        Restaurants: true,
       },
     });
   }
 
-  async findLikeResListByUserId(user_id: number): Promise<any> {
+  async findLikeResListByResId(res_id: number): Promise<any> {
     return await this.prisma.like_res.findMany({
       where: {
-        user_id,
+        res_id: Number(res_id),
         is_remove: false,
       },
     });

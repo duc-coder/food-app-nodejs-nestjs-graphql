@@ -62,17 +62,20 @@ export class UserService {
     return await this.prisma.users.create({ data });
   }
 
-  async findUsers(): Promise<Pick<UserModel, any>> {
+  async findUsers(): Promise<UserModel[]> {
     return await this.prisma.users.findMany({
       where: { is_remove: false },
     });
   }
 
-  async findUserById(user_id: number): Promise<any> {
+  async findUserById(user_id: number): Promise<UserModel> {
     const user = await this.prisma.users.findFirst({
       where: {
         user_id: user_id,
         is_remove: false,
+      },
+      include: {
+        Like_res: true,
       },
     });
     return user;

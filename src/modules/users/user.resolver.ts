@@ -1,6 +1,5 @@
 import {
   Args,
-  ID,
   Int,
   Mutation,
   Parent,
@@ -28,17 +27,20 @@ export class UserResolver {
     private likeRestaurantService: LikeRestaurantService,
   ) {}
 
-  @Subscription((_returns) => LikeRestaurantModel)
+  @Subscription((_returns) => LikeRestaurantModel, {
+    filter: (payload, variables) =>
+      payload.likeRestaurant.title === variables.title,
+  })
   likeRestaurant() {
     return pubSub.asyncIterator('likeRestaurant');
   }
 
   @Mutation((_returns) => LikeRestaurantModel)
   async addLikeRestaurant(
-    // @Args('user_id', { type: () => ID }) user_id: number,
     @Args('data') data: LikeRestaurantInput,
   ): Promise<LikeRestaurantModel> {
     const result = await this.likeRestaurantService.createLikeRes(data);
+    pubSub.publish('likeRestaurant', { likeRestaurant: result });
     return result;
   }
 
@@ -50,8 +52,7 @@ export class UserResolver {
 
   @Mutation((_returns) => UserModel)
   async createUser(@Args('data') data: CreateUserInput): Promise<UserModel> {
-    const result = await this.userService.createUser(data);
-    return result;
+    return await this.userService.createUser(data);
   }
 
   @Mutation((_returns) => UserModel)
@@ -64,7 +65,9 @@ export class UserResolver {
   }
 
   @Query((_returns) => [UserModel])
-  async getUsers(): Promise<Pick<UserModel[], any>> {
+  async getUsers(): Promise<UserModel[]> {
+    console.log('getUser');
+
     return await this.userService.findUsers();
   }
 
@@ -76,7 +79,9 @@ export class UserResolver {
     return user;
   }
 
-  @ResolveField('like_restaurants', (_returns) => [LikeRestaurantModel])
+  @ResolveField('like_restaurants', (_returns) => [LikeRestaurantModel], {
+    nullable: 'itemsAndList',
+  })
   async getLikeResListByUserId(@Parent() user: UserModel) {
     const { user_id } = user;
     return await this.likeRestaurantService.findLikeResListByUserId(

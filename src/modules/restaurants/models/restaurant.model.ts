@@ -4,10 +4,10 @@ import { LikeRestaurantModel } from 'src/modules/like_restaurants/models/like_re
 @ObjectType({ description: 'restaurant' })
 export class RestaurantModel {
   @Field((_type) => ID)
-  res_id: number;
+  res_id!: number;
 
   @Field()
-  res_name: string;
+  res_name!: string;
 
   @Field({ nullable: true })
   image?: string;
@@ -16,8 +16,8 @@ export class RestaurantModel {
   desc?: string;
 
   @Field({ defaultValue: false })
-  is_remove: boolean;
+  is_remove!: boolean;
 
-  @Field((_type) => [LikeRestaurantModel])
-  like_restaurants: LikeRestaurantModel[];
+  @Field((_type) => [LikeRestaurantModel], { nullable: 'itemsAndList' })
+  like_restaurants?: LikeRestaurantModel[];
 }

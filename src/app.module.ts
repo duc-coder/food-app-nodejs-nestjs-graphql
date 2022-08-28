@@ -6,7 +6,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LikeRestaurantModule } from './modules/like_restaurants/like_restaurant.module';
-import { RestaurantModel } from './modules/restaurants/models/restaurant.model';
+import { RestaurantModule } from './modules/restaurants/restaurant.module';
 import { UserModule } from './modules/users/user.module';
 
 @Module({
@@ -18,11 +18,13 @@ import { UserModule } from './modules/users/user.module';
       autoSchemaFile: join(process.cwd(), '/src/graphql/schema.gql'),
       sortSchema: true,
       subscriptions: {
-        'graphql-ws': true,
+        'graphql-ws': {
+          path: '/graphql',
+        },
       },
     }),
     UserModule,
-    RestaurantModel,
+    RestaurantModule,
     LikeRestaurantModule,
   ],
   controllers: [AppController],

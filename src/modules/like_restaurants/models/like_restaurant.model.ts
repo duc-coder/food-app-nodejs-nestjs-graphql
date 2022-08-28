@@ -4,9 +4,6 @@ import { UserModel } from 'src/modules/users/models/user.model';
 
 @ObjectType({ description: 'like_restaurant' })
 export class LikeRestaurantModel {
-  @Field((_type) => ID)
-  id: number;
-
   @Field()
   date_like: Date;
 
@@ -14,8 +11,8 @@ export class LikeRestaurantModel {
   is_remove: boolean;
 
   @Field((_type) => RestaurantModel)
-  res_id: RestaurantModel;
+  res_id: number;
 
   @Field((_type) => UserModel)
-  user_id: UserModel;
+  user_id: number;
 }
