@@ -66,16 +66,18 @@ export class UserResolver {
 
   @Query((_returns) => [UserModel])
   async getUsers(): Promise<UserModel[]> {
-    console.log('getUser');
-
     return await this.userService.findUsers();
   }
 
   @Query((_returns) => UserModel)
   async getUserById(
-    @Args('id', { type: () => Int }) user_id: GetUserArgs,
+    @Args('id', { type: () => String }) user_id: GetUserArgs,
   ): Promise<any> {
     const user = await this.userService.findUserById(Number(user_id));
+    console.log(user_id);
+
+    console.log(user_id);
+
     return user;
   }
 

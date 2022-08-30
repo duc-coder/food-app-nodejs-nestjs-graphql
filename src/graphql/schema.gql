@@ -44,7 +44,7 @@ type Mutation {
 type Query {
   getLikeResListByUserId(user_id: Float!): LikeRestaurantModel!
   getResList: RestaurantModel!
-  getUserById(id: Int!): UserModel!
+  getUserById(id: String!): UserModel!
   getUsers: [UserModel!]!
 }
 
