@@ -9,6 +9,7 @@ import {
   Subscription,
 } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import _ from 'lodash';
 import { LikeRestaurantService } from '../like_restaurants/like_restaurant.service';
 import { LikeRestaurantModel } from '../like_restaurants/models/like_restaurant.model';
 import { CreateUserInput } from './dto/createUser.arg';
@@ -56,12 +57,13 @@ export class UserResolver {
   }
 
   @Mutation((_returns) => UserModel)
-  async updateUserById(
-    @Args('id') user_id: number,
+  updateUserById(
+    @Args('id', { type: () => String }) user_id: Pick<UserModel, 'user_id'>,
     @Args('data') data: UpdateUserInput,
   ): Promise<UserModel> {
-    const result = await this.userService.updateUserById(Number(user_id), data);
-    return result;
+    // if (!data) return;
+
+    return this.userService.updateUserById(Number(user_id), data);
   }
 
   @Query((_returns) => [UserModel])
@@ -74,10 +76,6 @@ export class UserResolver {
     @Args('id', { type: () => String }) user_id: GetUserArgs,
   ): Promise<any> {
     const user = await this.userService.findUserById(Number(user_id));
-    console.log(user_id);
-
-    console.log(user_id);
-
     return user;
   }
 

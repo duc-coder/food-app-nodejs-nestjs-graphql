@@ -33,14 +33,7 @@ export class UserService {
         is_remove: false,
       },
     });
-    const checkExistEmail = await this.prisma.users.findFirst({
-      where: {
-        email: data.email,
-      },
-    });
-    if (checkExistEmail) {
-      throw new Error('Email is existing, please try other email!');
-    }
+
     return await this.prisma.users.update({
       where: {
         user_id: user_id,
@@ -79,5 +72,17 @@ export class UserService {
       },
     });
     return user;
+  }
+
+  async checkEmailExist(email: string): Promise<boolean> {
+    const checkExistEmail = await this.prisma.users.findFirst({
+      where: {
+        email: email,
+      },
+    });
+    if (checkExistEmail) {
+      throw new Error('Email is existing, please try other email!');
+    }
+    return true;
   }
 }
