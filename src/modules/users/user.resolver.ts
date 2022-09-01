@@ -58,11 +58,9 @@ export class UserResolver {
 
   @Mutation((_returns) => UserModel)
   updateUserById(
-    @Args('id', { type: () => String }) user_id: Pick<UserModel, 'user_id'>,
+    @Args('id', { type: () => Int }) user_id: Pick<UserModel, 'user_id'>,
     @Args('data') data: UpdateUserInput,
   ): Promise<UserModel> {
-    // if (!data) return;
-
     return this.userService.updateUserById(Number(user_id), data);
   }
 
@@ -73,7 +71,7 @@ export class UserResolver {
 
   @Query((_returns) => UserModel)
   async getUserById(
-    @Args('id', { type: () => String }) user_id: GetUserArgs,
+    @Args('id', { type: () => Int }) user_id: GetUserArgs,
   ): Promise<any> {
     const user = await this.userService.findUserById(Number(user_id));
     return user;

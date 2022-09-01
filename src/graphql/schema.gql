@@ -38,13 +38,13 @@ type Mutation {
   createRestaurant(data: createResInput!): RestaurantModel!
   createUser(data: CreateUserInput!): UserModel!
   deleteUserById(id: Float!): UserModel!
-  updateUserById(data: UpdateUserInput!, id: String!): UserModel!
+  updateUserById(data: UpdateUserInput!, id: Int!): UserModel!
 }
 
 type Query {
   getLikeResListByUserId(user_id: Float!): LikeRestaurantModel!
   getResList: RestaurantModel!
-  getUserById(id: String!): UserModel!
+  getUserById(id: Int!): UserModel!
   getUsers: [UserModel!]!
 }
 
