@@ -14,10 +14,7 @@ import { RestaurantService } from './restaurant.service';
 
 @Resolver((_of) => RestaurantModel)
 export class RestaurantResolver {
-  constructor(
-    private restaurantService: RestaurantService,
-    private likeRestaurantService: LikeRestaurantService,
-  ) {}
+  constructor(private restaurantService: RestaurantService) {}
 
   @Query((_returns) => RestaurantModel)
   async getResList(): Promise<any> {
@@ -29,11 +26,5 @@ export class RestaurantResolver {
     @Args('data') data: createResInput,
   ): Promise<RestaurantModel> {
     return await this.restaurantService.createRestaurant(data);
-  }
-
-  @ResolveField('like_restaurants', (_returns) => [LikeRestaurantModel])
-  async getLikeResListByResId(@Parent() res: RestaurantModel) {
-    const { res_id } = res;
-    return this.likeRestaurantService.findLikeResListByResId(Number(res_id));
   }
 }

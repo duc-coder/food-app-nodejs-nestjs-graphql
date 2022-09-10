@@ -30,14 +30,14 @@ model Foods {
 }
 
 model Like_res {
-  date_like   DateTime    @default(now())
-  is_remove   Boolean     @default(false)
-  user_id     Int         
-  res_id      Int
-  Users       Users       @relation(fields: [user_id], references: [user_id], map: "Like_res_ibfk_1859")
-  Restaurants Restaurants @relation(fields: [res_id], references: [res_id], map: "Like_res_ibfk_1860")
+  date_like  DateTime    @default(now())
+  is_remove  Boolean     @default(false)
+  user_id    Int
+  res_id     Int
+  id         Int         @id @default(autoincrement())
+  User       Users       @relation(fields: [user_id], references: [user_id], map: "Like_res_ibfk_1859")
+  Restaurant Restaurants @relation(fields: [res_id], references: [res_id], map: "Like_res_ibfk_1860")
 
-  @@id([user_id, res_id])
   @@index([res_id], map: "res_id")
   @@index([user_id], map: "user_id")
 }

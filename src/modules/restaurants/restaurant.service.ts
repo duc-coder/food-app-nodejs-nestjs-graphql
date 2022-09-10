@@ -12,6 +12,12 @@ export class RestaurantService {
     });
   }
 
+  async findResById(res_id: number): Promise<RestaurantModel> {
+    return this.prisma.restaurants.findFirst({
+      where: { is_remove: false, res_id },
+    });
+  }
+
   async createRestaurant(data: any): Promise<RestaurantModel> {
     return this.prisma.restaurants.create({ data });
   }

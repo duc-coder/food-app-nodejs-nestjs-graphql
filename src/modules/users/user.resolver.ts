@@ -12,6 +12,8 @@ import { PubSub } from 'graphql-subscriptions';
 import _ from 'lodash';
 import { LikeRestaurantService } from '../like_restaurants/like_restaurant.service';
 import { LikeRestaurantModel } from '../like_restaurants/models/like_restaurant.model';
+import { RestaurantModel } from '../restaurants/models/restaurant.model';
+import { RestaurantService } from '../restaurants/restaurant.service';
 import { CreateUserInput } from './dto/createUser.arg';
 import { GetUserArgs } from './dto/getUser.arg';
 import { LikeRestaurantInput } from './dto/likeRestaurant.arg';
@@ -26,6 +28,7 @@ export class UserResolver {
   constructor(
     private userService: UserService,
     private likeRestaurantService: LikeRestaurantService,
+    private restaurantService: RestaurantService,
   ) {}
 
   @Subscription((_returns) => LikeRestaurantModel, {
@@ -46,7 +49,9 @@ export class UserResolver {
   }
 
   @Mutation((_returns) => UserModel)
-  async deleteUserById(@Args('id') user_id: number): Promise<UserModel> {
+  async deleteUserById(
+    @Args('id', { type: () => Int }) user_id: Pick<UserModel, 'user_id'>,
+  ): Promise<UserModel> {
     const result = await this.userService.deleteUserById(Number(user_id));
     return result;
   }
@@ -57,11 +62,11 @@ export class UserResolver {
   }
 
   @Mutation((_returns) => UserModel)
-  updateUserById(
+  async updateUserById(
     @Args('id', { type: () => Int }) user_id: Pick<UserModel, 'user_id'>,
     @Args('data') data: UpdateUserInput,
   ): Promise<UserModel> {
-    return this.userService.updateUserById(Number(user_id), data);
+    return await this.userService.updateUserById(Number(user_id), data);
   }
 
   @Query((_returns) => [UserModel])
@@ -82,8 +87,18 @@ export class UserResolver {
   })
   async getLikeResListByUserId(@Parent() user: UserModel) {
     const { user_id } = user;
+    console.log('run getLikeResListByUserId');
+
     return await this.likeRestaurantService.findLikeResListByUserId(
       Number(user_id),
     );
+  }
+
+  @ResolveField('restaurant', (_returns) => RestaurantModel)
+  async getResById(@Parent() like_res: LikeRestaurantModel) {
+    const { res_id } = like_res;
+    console.log('run getResById');
+
+    return await this.restaurantService.findResById(Number(res_id));
   }
 }

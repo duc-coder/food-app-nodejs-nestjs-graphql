@@ -27,17 +27,21 @@ input LikeRestaurantInput {
 
 """like_restaurant"""
 type LikeRestaurantModel {
+  Restaurant: RestaurantModel!
+  User: RestaurantModel!
   date_like: DateTime!
+  id: ID!
   is_remove: Boolean!
-  res_id: RestaurantModel!
-  user_id: UserModel!
+  res_id: Int!
+  restaurant: RestaurantModel!
+  user_id: Int!
 }
 
 type Mutation {
   addLikeRestaurant(data: LikeRestaurantInput!): LikeRestaurantModel!
   createRestaurant(data: createResInput!): RestaurantModel!
   createUser(data: CreateUserInput!): UserModel!
-  deleteUserById(id: Float!): UserModel!
+  deleteUserById(id: Int!): UserModel!
   updateUserById(data: UpdateUserInput!, id: Int!): UserModel!
 }
 
@@ -53,7 +57,7 @@ type RestaurantModel {
   desc: String
   image: String
   is_remove: Boolean!
-  like_restaurants: [LikeRestaurantModel!]!
+  like_restaurants: [LikeRestaurantModel]
   res_id: ID!
   res_name: String!
 }
@@ -83,6 +87,7 @@ type UserModel {
   like_restaurants: [LikeRestaurantModel]
   password: String!
   refreshToken: String
+  restaurant: RestaurantModel!
   role: String!
   user_id: ID!
 }
