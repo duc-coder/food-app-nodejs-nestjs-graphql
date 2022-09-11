@@ -6,10 +6,7 @@ import { LikeRestaurantModel } from './models/like_restaurant.model';
 
 @Resolver((_of) => LikeRestaurantModel)
 export class LikeRestaurantResolver {
-  constructor(
-    private likeRestaurantService: LikeRestaurantService,
-    private restaurantService: RestaurantService,
-  ) {}
+  constructor(private likeRestaurantService: LikeRestaurantService) {}
 
   @Query((_returns) => LikeRestaurantModel)
   async getLikeResListByUserId(
@@ -18,13 +15,5 @@ export class LikeRestaurantResolver {
     return await this.likeRestaurantService.findLikeResListByUserId(
       Number(user_id),
     );
-  }
-
-  @ResolveField('restaurant', (_returns) => RestaurantModel)
-  async getResById(@Parent() like_res: LikeRestaurantModel) {
-    const { res_id } = like_res;
-    console.log('run getResById');
-
-    return await this.restaurantService.findResById(Number(res_id));
   }
 }

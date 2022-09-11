@@ -33,7 +33,6 @@ type LikeRestaurantModel {
   id: ID!
   is_remove: Boolean!
   res_id: Int!
-  restaurant: RestaurantModel!
   user_id: Int!
 }
 
@@ -87,7 +86,6 @@ type UserModel {
   like_restaurants: [LikeRestaurantModel]
   password: String!
   refreshToken: String
-  restaurant: RestaurantModel!
   role: String!
   user_id: ID!
 }

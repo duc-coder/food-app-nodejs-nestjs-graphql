@@ -87,18 +87,8 @@ export class UserResolver {
   })
   async getLikeResListByUserId(@Parent() user: UserModel) {
     const { user_id } = user;
-    console.log('run getLikeResListByUserId');
-
     return await this.likeRestaurantService.findLikeResListByUserId(
       Number(user_id),
     );
-  }
-
-  @ResolveField('restaurant', (_returns) => RestaurantModel)
-  async getResById(@Parent() like_res: LikeRestaurantModel) {
-    const { res_id } = like_res;
-    console.log('run getResById');
-
-    return await this.restaurantService.findResById(Number(res_id));
   }
 }

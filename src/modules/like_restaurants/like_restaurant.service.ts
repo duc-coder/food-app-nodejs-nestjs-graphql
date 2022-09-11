@@ -36,10 +36,10 @@ export class LikeRestaurantService {
         is_remove: false,
         user_id: Number(user_id),
       },
-      // include: {
-      //   // Users: true,
-      //   Restaurants: true,
-      // },
+      include: {
+        User: true,
+        Restaurant: true,
+      },
     });
   }
 
