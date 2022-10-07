@@ -4,22 +4,22 @@ import { __Type } from 'graphql';
 @InputType()
 export class UpdateUserInput {
   @Field({ nullable: true })
-  full_name: string;
+  full_name?: string;
 
   @Field({ nullable: true })
-  email: string;
+  email?: string;
 
   @Field({ nullable: true })
-  password: string;
+  password?: string;
 
   @Field({ nullable: true })
   address?: string;
 
   @Field({ nullable: true })
-  role: string;
+  role?: string;
 
   @Field({ nullable: true })
-  is_remove: boolean;
+  is_remove?: boolean;
 
   @Field({ nullable: true })
   accessToken?: string;

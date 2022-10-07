@@ -1,14 +1,6 @@
-import {
-  Args,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
-import { LikeRestaurantService } from '../like_restaurants/like_restaurant.service';
-import { LikeRestaurantModel } from '../like_restaurants/models/like_restaurant.model';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { createResInput } from './dto/createRes.arg';
+import { updateResInput } from './dto/updateRes.arg';
 import { RestaurantModel } from './models/restaurant.model';
 import { RestaurantService } from './restaurant.service';
 
@@ -16,15 +8,30 @@ import { RestaurantService } from './restaurant.service';
 export class RestaurantResolver {
   constructor(private restaurantService: RestaurantService) {}
 
+  @Query((_returns) => [RestaurantModel])
+  async getResList(): Promise<RestaurantModel[]> {
+    return await this.restaurantService.find();
+  }
+
   @Query((_returns) => RestaurantModel)
-  async getResList(): Promise<any> {
-    return await this.restaurantService.findResList();
+  async getResById(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<RestaurantModel> {
+    return await this.restaurantService.findById(id);
   }
 
   @Mutation((_returns) => RestaurantModel)
   async createRestaurant(
     @Args('data') data: createResInput,
   ): Promise<RestaurantModel> {
-    return await this.restaurantService.createRestaurant(data);
+    return await this.restaurantService.create(data);
+  }
+
+  @Mutation((_returns) => RestaurantModel)
+  async updateRestaurant(
+    @Args('id', { type: () => Int }) res_id: number,
+    @Args('data') data: updateResInput,
+  ): Promise<RestaurantModel> {
+    return await this.restaurantService.update(data, Number(res_id));
   }
 }

@@ -1,12 +1,19 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaModule } from 'nestjs-prisma';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BusboyMiddleware } from './middlewares/busboy.middleware';
 import { LikeRestaurantModule } from './modules/like_restaurants/like_restaurant.module';
 import { RestaurantModule } from './modules/restaurants/restaurant.module';
+import { RestaurantResolver } from './modules/restaurants/restaurant.resolver';
 import { UserModule } from './modules/users/user.module';
 
 @Module({
@@ -30,4 +37,10 @@ import { UserModule } from './modules/users/user.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(BusboyMiddleware)
+      .forRoutes({ path: 'graphql', method: RequestMethod.POST });
+  }
+}

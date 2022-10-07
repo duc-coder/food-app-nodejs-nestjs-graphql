@@ -23,4 +23,19 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     'prettier/prettier': ['error', { 'endOfLine': 'auto', }]
   },
+  overrides: [
+    {
+      files: ["*.mjs"],
+      parserOptions: {
+        sourceType: "module"
+      },
+      globals: {
+        __dirname: "off",
+        __filename: "off",
+        exports: "off",
+        module: "off",
+        require: "off"
+      }
+    }
+  ]
 };

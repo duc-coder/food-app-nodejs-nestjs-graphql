@@ -1,5 +1,4 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
-import { __Type } from 'graphql';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class createResInput {
